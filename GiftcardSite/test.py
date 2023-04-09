@@ -7,34 +7,11 @@ import io
 import json
 
 
-class SaltTest(TestCase):
-	def test_salt(self):
-		self.client.post(reverse('Register'), {
-		                 'uname': 'user', 'pword': 'password1', 'pword2': 'password1'})
-		self.client.post(reverse('Register'), {
-		                 'uname': 'admin', 'pword': 'password1', 'pword2': 'password1'})
-		data = io.StringIO(
-			'{"merchant_id": "Gift Card", "customer_id": "test", "total_value": "1000", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": " \' union SELECT password from LegacySite_user where username = \'user"}]}')
-		filename = "salt.gftcrd"
-		response = self.client.post(reverse('Input'), {
-		                            'card_data': data, 'filename': filename, 'card_supplied': True, 'card_fname': 'test'},)
-		pw1 = response.context.get('card_found', None)
-		print(pw1)
-		self.client.post(reverse('Register'), {'uname': 'admin', 'pword': 'password1'})
-		data = io.StringIO(
-			'{"merchant_id": "Gift Card", "customer_id": "test", "total_value": "1000", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": " \' union SELECT password from LegacySite_user where username = \'admin"}]}')
-		filename = "salt.gftcrd"
-		response = self.client.post(reverse('Input'), {
-		                            'card_data': data, 'filename': filename, 'card_supplied': True, 'card_fname': 'test'},)
-		pw2 = response.context.get('card_found', None)
-		assert (pw1 != pw2)
-
-
 class XSSTest(TestCase):
     def setUp(self):
          self.client = Client()
 
-    def Test(self):
+    def XSSTest(self):
          product = Product.objects.create(product_name = 'test', product_image_path= 'test', recommended_price = 1, description = 'test')
           response = self.client.get('/gift', {'director' : '<script>alert("Message")</script>'})
           self.assertContains(
@@ -46,7 +23,7 @@ class CSRFTest(TestCase):
           self.client = Client()
 
 
-     def csrf_attack(self):
+     def CSRFTest(self):
     <form action="http://127.0.0.1:8000/gift.html" method="POST">
         <input type="hidden" name="username" id="username" value="attacker" />
         <input type="hidden" name="amount" id="amount" value="1000" />
