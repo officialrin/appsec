@@ -90,7 +90,7 @@
                         <div class="d-flex mb-2">
                           <span> {{card_item.product.description }}</span>
                         </div>
-                        <form action="/use.html" method="post">
+                        <form action="/use.html" method="post">{% csrf_token %}
                         <input type="hidden" name="card_id" id="card_id" value="{{ card_item.id }}"/>
                         
                         <button class="btn btn-bid" type="submit">Use This Card</a>

