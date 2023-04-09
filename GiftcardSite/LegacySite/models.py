@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.backends import BaseBackend
 from . import extras
+from fernet_fields import EncryptedTextField
 
 # Create your models here.
 class User(AbstractBaseUser):
@@ -43,3 +44,4 @@ class Card(models.Model):
     fp = models.CharField(max_length=100, unique=True)
     user = models.ForeignKey('LegacySite.User', on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
+    name = EncryptedTextField()
