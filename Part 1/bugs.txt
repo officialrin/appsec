@@ -1,10 +1,13 @@
 ## PART 1
-1. attack 1 – XSS exploit
+1. Attack 1 – XSS
 * Info: The inclusion of the “safe” tag removes the default XSS protection from Django because this tag is only used on data that is known to be safe. Therefore, an script tag can be executed by navigating to the URL [http://127.0.0.1:8000/gift?director=<script>alert("You've won a free gift card!")</script>]. This will show the user a pop-up message at the aforementioned URL.
 * Fix: The “safe” tag can be removed from all instances within the html files, restoring the default XSS protection by changing {{director|safe}} to {director}. A “safe” tag was removed from gift.html and item-single.html to restore XSS protection.
 
-2. attack 2 – CSRF gift
+2. Attack 2 – CSRF
 * Info: This is another case of default Django protections being removed from the html code. In this case, the lack of CSRF tokens allowed the “form” tags to be exploited and a “post” request to be sent to the webpage with made-up values. The attacker can input a value for the gift card and their account details, allowing them to gift a gift card of any value to themselves.
 * Fix: This attack can be mitigated by adding the CSRF tokens mentioned before. The tag 
-{% csrf_token %} can be added to lines where the “post” tag is used. This prevents attackers from exploiting the post requests. Django also has CSRF protections that can be added using ‘django.middleware.csrf.CsrfViewMiddleware’ to the settings.py file. The tag {% csrf_token %} was added to four files: gift.html, login.html, register.html, and use-card.html.
+{% csrf_token %} can be added to lines where the “post” tag is used. This prevents attackers from exploiting the post requests. The tag {% csrf_token %} was added to four files: gift.html, login.html, register.html, and use-card.html. Django also has CSRF protections that can be added using ‘django.middleware.csrf.CsrfViewMiddleware’ to the MIDDLEWARE section of the settings.py file.
 
+3. Attack 3 – SQLi
+* Info: In the file views.py, we can find a non-encoded SQL query. By utilizing the signature value to add an SQLi payload into this query, the user can force the website to dump data. To do this, a gift card can be created with the SQL injection within it.
+* Fix: To fix this issue, the signature in the views.py file mentioned earlier can be changed to an encoded signature to block SQL attacks using “data = signature.encode()” in place of the original line.
