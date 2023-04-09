@@ -11,3 +11,7 @@
 3. Attack 3 – SQLi
 * Info: In the file views.py, we can find a non-encoded SQL query. By utilizing the signature value to add an SQLi payload into this query, the user can force the website to dump data. To do this, a gift card can be created with the SQL injection within it.
 * Fix: To fix this issue, the signature in the views.py file mentioned earlier can be changed to an encoded signature to block SQL attacks using “data = signature.encode()” in place of the original line.
+
+4. Attack 4 – Salting
+* Info: Using a SQLi union attack to dump passwords specifically, it was found that the same salt is being used when hashing every password. This function is found in the extras.py file. This means the password are vulnerable and can easily be cracked using brute force methods such as a dictionary attack.
+* Fix: A few things must be done to fix this issue. First, the “import random” line must be moved from the “generate_salt” function to the top. This ensures that the random number generation will function correctly. Next, “random.seed(SEED)” from the same function must be deleted from the code. Finally, the “SEED = settings.RANDOM_SEED” must also be deleted. Once these three things are done, the salt value will become random.
